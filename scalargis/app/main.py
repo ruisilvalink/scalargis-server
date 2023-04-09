@@ -205,10 +205,10 @@ def check_path():
 
 @app.cli.command()
 def init_db():
-    configure_app(app)
+    #configure_app(app)
 
-    db.init_app(app)
-    setup_security(app)
+    #db.init_app(app)
+    #setup_security(app)
 
     from app.database.schema import create_schema
     create_schema()
@@ -218,10 +218,10 @@ def init_db():
 
 @app.cli.command()
 def load_sample_data():
-    configure_app(app)
+    #configure_app(app)
 
-    db.init_app(app)
-    setup_security(app)
+    #db.init_app(app)
+    #setup_security(app)
 
     from app.database.schema import load_sample_data
     load_sample_data()

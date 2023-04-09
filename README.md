@@ -70,3 +70,29 @@ Instalar o repositório da componente cliente ao lado da diretoria scalargis-ser
 
 > yarn install
 
+
+## Docker compose
+
+Abrir o terminal e executar o comando
+
+> docker compose up scalargis-db
+
+Abrir um outro terminal e executar o comando
+
+> docker compose up scalargis-init-db
+
+Quando terminar, executar o comando
+
+> docker compose up scalargis-web
+
+Abri o browser no endereço seguinte para aceder ao backoffice
+
+> http://localhost:5000/backoffice/
+
+Utilizador: admin
+Password: admin
+
+> Abrir o browser no endereço seguinte para aceder ao mapa
+http://localhost:5000/mapa/1
+
+

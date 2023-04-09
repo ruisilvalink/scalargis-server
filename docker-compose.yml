@@ -1,8 +1,50 @@
 version: '3'
 
 services:
-  scalargis:
+  scalargis-db:
+    image: scalargis/postgis-pt
+    build:
+      context: .
+      dockerfile: database.dockerfile
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - SCALARGIS_DB_USER=${SCALARGIS_DB_USER}
+      - SCALARGIS_DB_PASSWORD=${SCALARGIS_DB_PASSWORD}
+      - SCALARGIS_DB=${SCALARGIS_DB}
+    shm_size: '256MB'
+    volumes:
+      - scalargis-db-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: always
+    networks:
+      - scalargis
+
+  scalargis-init-db:
     image: ${IMAGE_NAME}
+    build:
+      context: .
+    environment:
+      - APP_CONFIG_FILE=${APP_CONFIG_FILE}
+      - PYTHONPATH=/var/scalargis/scalargis
+      - SCALARGIS_DB_USER=${SCALARGIS_DB_USER}
+      - SCALARGIS_DB_PASSWORD=${SCALARGIS_DB_PASSWORD}
+      - SCALARGIS_DB=${SCALARGIS_DB}
+    command: ["sh", "-c", "flask --app server.py init-db 2>&1"]
+    networks:
+      - scalargis
+    depends_on:
+      - scalargis-db
+
+  scalargis-web:
+    image: ${IMAGE_NAME}
+    build:
+      context: .
     expose:
       - ${PORT}
     ports:
@@ -27,8 +69,17 @@ services:
       - PYTHONPATH=/var/scalargis/scalargis
       - PORT=${PORT}
       - URL_PREFIX=${URL_PREFIX}
+      - SCALARGIS_DB_USER=${SCALARGIS_DB_USER}
+      - SCALARGIS_DB_PASSWORD=${SCALARGIS_DB_PASSWORD}
+      - SCALARGIS_DB=${SCALARGIS_DB}
     networks:
       - scalargis
+    depends_on:
+      - scalargis-init-db
 
 networks:
   scalargis:
+
+volumes:
+  scalargis-db-data: 
+  
