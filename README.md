@@ -89,10 +89,11 @@ Abri o browser no endereço seguinte para aceder ao backoffice
 
 > http://localhost:5000/backoffice/
 
-Utilizador: admin
-Password: admin
+> Utilizador: admin
+> Password: admin
 
-> Abrir o browser no endereço seguinte para aceder ao mapa
-http://localhost:5000/mapa/1
+Abrir o browser no endereço seguinte para aceder ao mapa
+
+> http://localhost:5000/mapa/1
 
 
